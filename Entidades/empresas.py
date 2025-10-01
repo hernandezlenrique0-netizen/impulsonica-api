@@ -1,5 +1,5 @@
 # Importamos APIRouter desde FastAPI para definir rutas específicas
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 # Importamos el modelo de datos Empresas desde el archivo correspondiente
 from modelo.empresas_modelo import Empresas
@@ -32,6 +32,12 @@ class EmpresasAPI:
         # Registramos la ruta POST "/empresas" que llama al metodo creater_empresas
         self.router.post("/empresas")(self.creater_empresas)
 
+        # Registramos la ruta PUT "/empresas/{id}" para actualizar una empresa existente
+        self.router.put("/empresas/{id}")(self.actualizar_empresa)
+
+        # Registramos la ruta DELETE "/empresas/{id}" para eliminar una empresa por ID
+        self.router.delete("/empresas/{id}")(self.eliminar_empresa)
+
     # Metodo que se ejecuta cuando se hace una petición GET a "/empresas"
     def obtener_empresas(self):
         # Devuelve la lista de empresas almacenadas
@@ -44,6 +50,33 @@ class EmpresasAPI:
 
         # Devuelve un mensaje de confirmación junto con la empresa agregada
         return {
-            "mensaje ": "empresa agregada con exito",
+            "mensaje": "Empresa agregada con éxito",
             "empresas": empresas
         }
+
+    # Metodo que se ejecuta cuando se hace una petición PUT a "/empresas/{id}"
+    def actualizar_empresa(self, id: int, datos: Empresas):
+        """
+        Este endpoint permite actualizar los datos de una empresa existente.
+        - Parámetro `id`: ID de la empresa que se desea actualizar.
+        - Parámetro `datos`: Objeto con los nuevos datos de la empresa.
+        - Retorna: El objeto actualizado si se encuentra, o un error 404 si no existe.
+        """
+        for i, empresa in enumerate(self.empresas):
+            if empresa.Id == id:
+                self.empresas[i] = datos  # Reemplaza la empresa existente con los nuevos datos
+                return datos  # Devuelve la empresa actualizada
+        raise HTTPException(status_code=404, detail="Empresa no encontrada")  # Error si no se encuentra
+
+    # Metodo que se ejecuta cuando se hace una petición DELETE a "/empresas/{id}"
+    def eliminar_empresa(self, id: int):
+        """
+        Este endpoint permite eliminar una empresa por su ID.
+        - Parámetro `id`: ID de la empresa que se desea eliminar.
+        - Retorna: Un mensaje de confirmación si se elimina, o un error 404 si no existe.
+        """
+        for i, empresa in enumerate(self.empresas):
+            if empresa.Id == id:
+                del self.empresas[i]  # Elimina la empresa de la lista
+                return {"mensaje": "Empresa eliminada exitosamente"}  # Mensaje de éxito
+        raise HTTPException(status_code=404, detail="Empresa no encontrada")  # Error si no se encuentra

@@ -1,5 +1,5 @@
 # Importamos APIRouter desde FastAPI para definir rutas específicas
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 # Importamos el modelo de datos Vacantes desde el archivo correspondiente
 from modelo.vacantes_modelo import Vacantes
@@ -37,6 +37,12 @@ class VacantesAPI:
         # Registramos la ruta POST "/vacantes" que llama al metodo creater_vacantes
         self.router.post("/vacantes")(self.creater_vacantes)
 
+        # Registramos la ruta PUT "/vacantes/{id}" para actualizar una vacante existente
+        self.router.put("/vacantes/{id}")(self.actualizar_vacante)
+
+        # Registramos la ruta DELETE "/vacantes/{id}" para eliminar una vacante por ID
+        self.router.delete("/vacantes/{id}")(self.eliminar_vacante)
+
     # Metodo que se ejecuta cuando se hace una petición GET a "/vacantes"
     def obtener_vacantes(self):
         # Devuelve la lista de vacantes almacenadas
@@ -49,9 +55,36 @@ class VacantesAPI:
 
         # Devuelve un mensaje de confirmación junto con la vacante agregada
         return {
-            "mensaje ": "vacante agregado con exito",
+            "mensaje": "Vacante agregada con éxito",
             "vacante": vacante
         }
+
+    # Metodo que se ejecuta cuando se hace una petición PUT a "/vacantes/{id}"
+    def actualizar_vacante(self, id: int, datos: Vacantes):
+        """
+        Este endpoint permite actualizar los datos de una vacante existente.
+        - Parámetro `id`: ID de la vacante que se desea actualizar.
+        - Parámetro `datos`: Objeto con los nuevos datos de la vacante.
+        - Retorna: El objeto actualizado si se encuentra, o un error 404 si no existe.
+        """
+        for i, vacante in enumerate(self.vacante):
+            if vacante.Id == id:
+                self.vacante[i] = datos  # Reemplaza la vacante existente con los nuevos datos
+                return datos  # Devuelve la vacante actualizada
+        raise HTTPException(status_code=404, detail="Vacante no encontrada")  # Error si no se encuentra
+
+    # Metodo que se ejecuta cuando se hace una petición DELETE a "/vacantes/{id}"
+    def eliminar_vacante(self, id: int):
+        """
+        Este endpoint permite eliminar una vacante por su ID.
+        - Parámetro `id`: ID de la vacante que se desea eliminar.
+        - Retorna: Un mensaje de confirmación si se elimina, o un error 404 si no existe.
+        """
+        for i, vacante in enumerate(self.vacante):
+            if vacante.Id == id:
+                del self.vacante[i]  # Elimina la vacante de la lista
+                return {"mensaje": "Vacante eliminada exitosamente"}  # Mensaje de éxito
+        raise HTTPException(status_code=404, detail="Vacante no encontrada")  # Error si no se encuentra
 
 
 

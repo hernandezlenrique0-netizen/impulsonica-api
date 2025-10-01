@@ -1,5 +1,5 @@
 # Importamos APIRouter desde FastAPI para definir rutas específicas
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 # Importamos el modelo de datos Postulaciones desde el archivo correspondiente
 from modelo.postulaciones_modelo import Postulaciones
@@ -19,9 +19,7 @@ class PostulacionesAPI:
                 Id=1,                          # ID único de la postulación
                 CandidatoId=1,                 # ID del candidato que se postula
                 EmpleoId=1,                    # ID del empleo al que se postula
-                FechaPublicación=date(         # Fecha en que se realizó la postulación
-                    year=2025, month=9, day=25
-                ),
+                FechaPublicación=date(2025, 9, 25),  # Fecha en que se realizó la postulación
                 EstadoPostulación=True         # Estado de la postulación (True = activa)
             )
         ]
@@ -31,6 +29,12 @@ class PostulacionesAPI:
 
         # Registramos la ruta POST "/postulaciones" que llama al metodo creater_postulaciones
         self.router.post("/postulaciones")(self.creater_postulaciones)
+
+        # Registramos la ruta PUT "/postulaciones/{id}" para actualizar una postulación existente
+        self.router.put("/postulaciones/{id}")(self.actualizar_postulacion)
+
+        # Registramos la ruta DELETE "/postulaciones/{id}" para eliminar una postulación por ID
+        self.router.delete("/postulaciones/{id}")(self.eliminar_postulacion)
 
     # Metodo que se ejecuta cuando se hace una petición GET a "/postulaciones"
     def obtener_postulaciones(self):
@@ -44,6 +48,33 @@ class PostulacionesAPI:
 
         # Devuelve un mensaje de confirmación junto con la postulación agregada
         return {
-            "mensaje ": " postulación agregada con exito",
-            "postulción": postulaciones
+            "mensaje": "Postulación agregada con éxito",
+            "postulacion": postulaciones
         }
+
+    # Metodo que se ejecuta cuando se hace una petición PUT a "/postulaciones/{id}"
+    def actualizar_postulacion(self, id: int, datos: Postulaciones):
+        """
+        Este endpoint permite actualizar los datos de una postulación existente.
+        - Parámetro `id`: ID de la postulación que se desea actualizar.
+        - Parámetro `datos`: Objeto con los nuevos datos de la postulación.
+        - Retorna: El objeto actualizado si se encuentra, o un error 404 si no existe.
+        """
+        for i, postulacion in enumerate(self.postulaciones):
+            if postulacion.Id == id:
+                self.postulaciones[i] = datos  # Reemplaza la postulación existente con los nuevos datos
+                return datos  # Devuelve la postulación actualizada
+        raise HTTPException(status_code=404, detail="Postulación no encontrada")  # Error si no se encuentra
+
+    # Metodo que se ejecuta cuando se hace una petición DELETE a "/postulaciones/{id}"
+    def eliminar_postulacion(self, id: int):
+        """
+        Este endpoint permite eliminar una postulación por su ID.
+        - Parámetro `id`: ID de la postulación que se desea eliminar.
+        - Retorna: Un mensaje de confirmación si se elimina, o un error 404 si no existe.
+        """
+        for i, postulacion in enumerate(self.postulaciones):
+            if postulacion.Id == id:
+                del self.postulaciones[i]  # Elimina la postulación de la lista
+                return {"mensaje": "Postulación eliminada exitosamente"}  # Mensaje de éxito
+        raise HTTPException(status_code=404, detail="Postulación no encontrada")  # Error si no se encuentra
