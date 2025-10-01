@@ -10,10 +10,7 @@ from datetime import date
 # Definimos una clase que encapsula las rutas relacionadas con el recurso "Postulaciones"
 class PostulacionesAPI:
     def __init__(self):
-        # Creamos un router exclusivo para esta clase
         self.router = APIRouter()
-
-        # Creamos una lista con una postulación de ejemplo (simula una base de datos en memoria)
         self.postulaciones = [
             Postulaciones(
                 Id=1,                          # ID único de la postulación
@@ -62,9 +59,9 @@ class PostulacionesAPI:
         """
         for i, postulacion in enumerate(self.postulaciones):
             if postulacion.Id == id:
-                self.postulaciones[i] = datos  # Reemplaza la postulación existente con los nuevos datos
-                return datos  # Devuelve la postulación actualizada
-        raise HTTPException(status_code=404, detail="Postulación no encontrada")  # Error si no se encuentra
+                self.postulaciones[i] = datos
+                return datos
+        raise HTTPException(status_code=404, detail="Postulación no encontrada")
 
     # Metodo que se ejecuta cuando se hace una petición DELETE a "/postulaciones/{id}"
     def eliminar_postulacion(self, id: int):
@@ -75,6 +72,6 @@ class PostulacionesAPI:
         """
         for i, postulacion in enumerate(self.postulaciones):
             if postulacion.Id == id:
-                del self.postulaciones[i]  # Elimina la postulación de la lista
-                return {"mensaje": "Postulación eliminada exitosamente"}  # Mensaje de éxito
-        raise HTTPException(status_code=404, detail="Postulación no encontrada")  # Error si no se encuentra
+                del self.postulaciones[i]
+                return {"mensaje": "Postulación eliminada exitosamente"}
+        raise HTTPException(status_code=404, detail="Postulación no encontrada")

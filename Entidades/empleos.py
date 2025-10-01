@@ -10,10 +10,7 @@ from datetime import date
 # Definimos una clase que encapsula las rutas relacionadas con el recurso "Empleos"
 class EmpleosAPI:
     def __init__(self):
-        # Creamos un router exclusivo para esta clase
         self.router = APIRouter()
-
-        # Creamos una lista con una oferta de empleo de ejemplo (simula una base de datos en memoria)
         self.empleos = [
             Empleos(
                 Id=2,
@@ -67,8 +64,8 @@ class EmpleosAPI:
         for i, empleo in enumerate(self.empleos):
             if empleo.Id == id:
                 self.empleos[i] = datos  # Reemplaza el empleo existente con los nuevos datos
-                return datos  # Devuelve el empleo actualizado
-        raise HTTPException(status_code=404, detail="Empleo no encontrado")  # Error si no se encuentra
+                return datos
+        raise HTTPException(status_code=404, detail="Empleo no encontrado")
 
     # Metodo que se ejecuta cuando se hace una petición DELETE a "/empleos/{id}"
     def eliminar_empleo(self, id: int):
@@ -80,5 +77,5 @@ class EmpleosAPI:
         for i, empleo in enumerate(self.empleos):
             if empleo.Id == id:
                 del self.empleos[i]  # Elimina el empleo de la lista
-                return {"mensaje": "Empleo eliminado exitosamente"}  # Mensaje de éxito
-        raise HTTPException(status_code=404, detail="Empleo no encontrado")  # Error si no se encuentra
+                return {"mensaje": "Empleo eliminado exitosamente"}
+        raise HTTPException(status_code=404, detail="Empleo no encontrado")

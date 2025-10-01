@@ -7,10 +7,7 @@ from modelo.departamentos_modelo import Departamentos
 # Definimos una clase que encapsula las rutas relacionadas con el recurso "Departamentos"
 class DepartamentosAPI:
     def __init__(self):
-        # Creamos un router exclusivo para esta clase
         self.router = APIRouter()
-
-        # Creamos una lista con un departamento de ejemplo (simula una base de datos en memoria)
         self.departamentos = [
             Departamentos(
                 Id=1,
@@ -56,9 +53,9 @@ class DepartamentosAPI:
         """
         for i, depto in enumerate(self.departamentos):
             if depto.Id == id:
-                self.departamentos[i] = datos  # Reemplaza el departamento existente con los nuevos datos
-                return datos  # Devuelve el departamento actualizado
-        raise HTTPException(status_code=404, detail="Departamento no encontrado")  # Error si no se encuentra
+                self.departamentos[i] = datos
+                return datos
+        raise HTTPException(status_code=404, detail="Departamento no encontrado")
 
     # Metodo que se ejecuta cuando se hace una petición DELETE a "/departamento/{id}"
     def eliminar_departamento(self, id: int):
@@ -69,6 +66,6 @@ class DepartamentosAPI:
         """
         for i, depto in enumerate(self.departamentos):
             if depto.Id == id:
-                del self.departamentos[i]  # Elimina el departamento de la lista
-                return {"mensaje": "Departamento eliminado exitosamente"}  # Mensaje de éxito
-        raise HTTPException(status_code=404, detail="Departamento no encontrado")  # Error si no se encuentra
+                del self.departamentos[i]
+                return {"mensaje": "Departamento eliminado exitosamente"}
+        raise HTTPException(status_code=404, detail="Departamento no encontrado")

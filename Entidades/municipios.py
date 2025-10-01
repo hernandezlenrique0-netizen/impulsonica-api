@@ -7,10 +7,7 @@ from modelo.municipios_modelo import Municipios
 # Definimos una clase que encapsula las rutas relacionadas con el recurso "Municipios"
 class MunicipiosAPI:
     def __init__(self):
-        # Creamos un router exclusivo para esta clase
         self.router = APIRouter()
-
-        # Creamos una lista con un municipio de ejemplo (simula una base de datos en memoria)
         self.municipios = [
             Municipios(
                 Id=1,
@@ -57,9 +54,9 @@ class MunicipiosAPI:
         """
         for i, municipio in enumerate(self.municipios):
             if municipio.Id == id:
-                self.municipios[i] = datos  # Reemplaza el municipio existente con los nuevos datos
-                return datos  # Devuelve el municipio actualizado
-        raise HTTPException(status_code=404, detail="Municipio no encontrado")  # Error si no se encuentra
+                self.municipios[i] = datos
+                return datos
+        raise HTTPException(status_code=404, detail="Municipio no encontrado")
 
     # Metodo que se ejecuta cuando se hace una petición DELETE a "/municipios/{id}"
     def eliminar_municipio(self, id: int):
@@ -70,6 +67,6 @@ class MunicipiosAPI:
         """
         for i, municipio in enumerate(self.municipios):
             if municipio.Id == id:
-                del self.municipios[i]  # Elimina el municipio de la lista
-                return {"mensaje": "Municipio eliminado exitosamente"}  # Mensaje de éxito
-        raise HTTPException(status_code=404, detail="Municipio no encontrado")  # Error si no se encuentra
+                del self.municipios[i]
+                return {"mensaje": "Municipio eliminado exitosamente"}
+        raise HTTPException(status_code=404, detail="Municipio no encontrado")

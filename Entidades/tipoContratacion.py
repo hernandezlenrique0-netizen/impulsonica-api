@@ -7,10 +7,7 @@ from modelo.tipoContratacion_modelo import TipoContratacion
 # Definimos una clase que encapsula las rutas relacionadas con el recurso "TipoContratacion"
 class TipoContratacionAPI:
     def __init__(self):
-        # Creamos un router exclusivo para esta clase
         self.router = APIRouter()
-
-        # Creamos una lista con un tipo de contratación de ejemplo (simula una base de datos en memoria)
         self.tipoContratacion = [
             TipoContratacion(
                 Id=1,
@@ -56,9 +53,9 @@ class TipoContratacionAPI:
         """
         for i, tipo in enumerate(self.tipoContratacion):
             if tipo.Id == id:
-                self.tipoContratacion[i] = datos  # Reemplaza el tipo existente con los nuevos datos
-                return datos  # Devuelve el tipo actualizado
-        raise HTTPException(status_code=404, detail="Tipo de contratación no encontrado")  # Error si no se encuentra
+                self.tipoContratacion[i] = datos
+                return datos
+        raise HTTPException(status_code=404, detail="Tipo de contratación no encontrado")
 
     # Metodo que se ejecuta cuando se hace una petición DELETE a "/Tcontratación/{id}"
     def eliminar_Tcontratacion(self, id: int):
@@ -69,6 +66,6 @@ class TipoContratacionAPI:
         """
         for i, tipo in enumerate(self.tipoContratacion):
             if tipo.Id == id:
-                del self.tipoContratacion[i]  # Elimina el tipo de la lista
-                return {"mensaje": "Tipo de contratación eliminada exitosamente"}  # Mensaje de éxito
-        raise HTTPException(status_code=404, detail="Tipo de contratación no encontrado")  # Error si no se encuentra
+                del self.tipoContratacion[i]
+                return {"mensaje": "Tipo de contratación eliminada exitosamente"}
+        raise HTTPException(status_code=404, detail="Tipo de contratación no encontrado")

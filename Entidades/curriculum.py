@@ -7,10 +7,7 @@ from modelo.curriculum_modelo import Curriculum
 # Definimos una clase que encapsula las rutas relacionadas con el recurso "Curriculum"
 class CurriculmAPI:
     def __init__(self):
-        # Creamos un router exclusivo para esta clase
         self.router = APIRouter()
-
-        # Creamos una lista con un curriculum de ejemplo (simula una base de datos en memoria)
         self.curriculum = [
             Curriculum(
                 Id=1,
@@ -61,9 +58,9 @@ class CurriculmAPI:
         """
         for i, curr in enumerate(self.curriculum):
             if curr.Id == id:
-                self.curriculum[i] = datos  # Reemplaza el curriculum existente con los nuevos datos
-                return datos  # Devuelve el curriculum actualizado
-        raise HTTPException(status_code=404, detail="Curriculum no encontrado")  # Error si no se encuentra
+                self.curriculum[i] = datos
+                return datos
+        raise HTTPException(status_code=404, detail="Curriculum no encontrado")
 
     # Metodo que se ejecuta cuando se hace una petición DELETE a "/curriculum/{id}"
     def eliminar_curriculum(self, id: int):
@@ -74,6 +71,6 @@ class CurriculmAPI:
         """
         for i, curr in enumerate(self.curriculum):
             if curr.Id == id:
-                del self.curriculum[i]  # Elimina el curriculum de la lista
-                return {"mensaje": "Curriculum eliminado exitosamente"}  # Mensaje de éxito
-        raise HTTPException(status_code=404, detail="Curriculum no encontrado")  # Error si no se encuentra
+                del self.curriculum[i]
+                return {"mensaje": "Curriculum eliminado exitosamente"}
+        raise HTTPException(status_code=404, detail="Curriculum no encontrado")

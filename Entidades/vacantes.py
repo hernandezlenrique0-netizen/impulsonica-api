@@ -7,10 +7,7 @@ from modelo.vacantes_modelo import Vacantes
 # Definimos una clase que encapsula las rutas relacionadas con el recurso "Vacantes"
 class VacantesAPI:
     def __init__(self):
-        # Creamos un router exclusivo para esta clase
         self.router = APIRouter()
-
-        # Creamos una lista con una vacante de ejemplo (simula una base de datos en memoria)
         self.vacante = [
             Vacantes(
                 Id=1,  # ID único de la vacante
@@ -69,9 +66,9 @@ class VacantesAPI:
         """
         for i, vacante in enumerate(self.vacante):
             if vacante.Id == id:
-                self.vacante[i] = datos  # Reemplaza la vacante existente con los nuevos datos
-                return datos  # Devuelve la vacante actualizada
-        raise HTTPException(status_code=404, detail="Vacante no encontrada")  # Error si no se encuentra
+                self.vacante[i] = datos
+                return datos
+        raise HTTPException(status_code=404, detail="Vacante no encontrada")
 
     # Metodo que se ejecuta cuando se hace una petición DELETE a "/vacantes/{id}"
     def eliminar_vacante(self, id: int):
@@ -82,9 +79,9 @@ class VacantesAPI:
         """
         for i, vacante in enumerate(self.vacante):
             if vacante.Id == id:
-                del self.vacante[i]  # Elimina la vacante de la lista
-                return {"mensaje": "Vacante eliminada exitosamente"}  # Mensaje de éxito
-        raise HTTPException(status_code=404, detail="Vacante no encontrada")  # Error si no se encuentra
+                del self.vacante[i]
+                return {"mensaje": "Vacante eliminada exitosamente"}
+        raise HTTPException(status_code=404, detail="Vacante no encontrada")
 
 
 

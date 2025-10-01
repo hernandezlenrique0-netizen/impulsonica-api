@@ -7,10 +7,7 @@ from modelo.administrador_modelo import Administrador
 # Definimos una clase que encapsula las rutas relacionadas con "Administrador"
 class AdministradorAPI:
     def __init__(self):
-        # Creamos un router exclusivo para esta clase
         self.router = APIRouter()
-
-        # Creamos una lista con un administrador de ejemplo (simula una base de datos en memoria)
         self.administrador = [
             Administrador(
                 Id=2,
@@ -61,7 +58,7 @@ class AdministradorAPI:
             if admin.Id == id:
                 self.administrador[i] = datos  # Reemplaza el administrador existente con los nuevos datos
                 return datos  # Devuelve el administrador actualizado
-        raise HTTPException(status_code=404, detail="Administrador no encontrado")  # Error si no se encuentra
+        raise HTTPException(status_code=404, detail="Administrador no encontrado")
 
     # Metodo que se ejecuta cuando se hace una petición DELETE a "/administrador/{id}"
     def eliminar_administrador(self, id: int):
@@ -73,5 +70,5 @@ class AdministradorAPI:
         for i, admin in enumerate(self.administrador):
             if admin.Id == id:
                 del self.administrador[i]  # Elimina el administrador de la lista
-                return {"mensaje": "Administrador eliminado exitosamente"}  # Mensaje de éxito
+                return {"mensaje": "Administrador eliminado exitosamente"}
         raise HTTPException(status_code=404, detail="Administrador no encontrado")  # Error si no se encuentra

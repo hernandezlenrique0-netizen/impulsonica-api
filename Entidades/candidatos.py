@@ -7,10 +7,7 @@ from modelo.candidatos_modelo import Candidatos
 # Definimos una clase que encapsula las rutas relacionadas con "Candidatos"
 class CandidatosAPI:
     def __init__(self):
-        # Creamos un router exclusivo para esta clase
         self.router = APIRouter()
-
-        # Creamos una lista con un candidato de ejemplo (simula una base de datos en memoria)
         self.candidato = [
             Candidatos(
                 Id=1,
@@ -65,9 +62,9 @@ class CandidatosAPI:
         """
         for i, candidato in enumerate(self.candidato):
             if candidato.Id == id:
-                self.candidato[i] = datos  # Reemplaza el candidato existente con los nuevos datos
-                return datos  # Devuelve el candidato actualizado
-        raise HTTPException(status_code=404, detail="Candidato no encontrado")  # Error si no se encuentra
+                self.candidato[i] = datos
+                return datos
+        raise HTTPException(status_code=404, detail="Candidato no encontrado")
 
     # Metodo que se ejecuta cuando se hace una petición DELETE a "/candidatos/{id}"
     def eliminar_candidato(self, id: int):
@@ -78,6 +75,6 @@ class CandidatosAPI:
         """
         for i, candidato in enumerate(self.candidato):
             if candidato.Id == id:
-                del self.candidato[i]  # Elimina el candidato de la lista
-                return {"mensaje": "Candidato eliminado exitosamente"}  # Mensaje de éxito
-        raise HTTPException(status_code=404, detail="Candidato no encontrado")  # Error si no se encuentra
+                del self.candidato[i]
+                return {"mensaje": "Candidato eliminado exitosamente"}
+        raise HTTPException(status_code=404, detail="Candidato no encontrado")

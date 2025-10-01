@@ -7,10 +7,7 @@ from modelo.empresas_modelo import Empresas
 # Definimos una clase que encapsula las rutas relacionadas con el recurso "Empresas"
 class EmpresasAPI:
     def __init__(self):
-        # Creamos un router exclusivo para esta clase
         self.router = APIRouter()
-
-        # Creamos una lista con una empresa de ejemplo (simula una base de datos en memoria)
         self.empresas = [
             Empresas(
                 Id=1,
@@ -64,9 +61,9 @@ class EmpresasAPI:
         """
         for i, empresa in enumerate(self.empresas):
             if empresa.Id == id:
-                self.empresas[i] = datos  # Reemplaza la empresa existente con los nuevos datos
-                return datos  # Devuelve la empresa actualizada
-        raise HTTPException(status_code=404, detail="Empresa no encontrada")  # Error si no se encuentra
+                self.empresas[i] = datos
+                return datos
+        raise HTTPException(status_code=404, detail="Empresa no encontrada")
 
     # Metodo que se ejecuta cuando se hace una petición DELETE a "/empresas/{id}"
     def eliminar_empresa(self, id: int):
@@ -77,6 +74,6 @@ class EmpresasAPI:
         """
         for i, empresa in enumerate(self.empresas):
             if empresa.Id == id:
-                del self.empresas[i]  # Elimina la empresa de la lista
-                return {"mensaje": "Empresa eliminada exitosamente"}  # Mensaje de éxito
-        raise HTTPException(status_code=404, detail="Empresa no encontrada")  # Error si no se encuentra
+                del self.empresas[i]
+                return {"mensaje": "Empresa eliminada exitosamente"}
+        raise HTTPException(status_code=404, detail="Empresa no encontrada")
