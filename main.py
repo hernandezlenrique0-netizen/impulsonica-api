@@ -1,7 +1,5 @@
-# Importamos FastAPI para crear la aplicación principal
 from fastapi import FastAPI
 
-# Importamos las clases API desde los módulos de entidades
 from Entidades.administrador import AdministradorAPI
 from Entidades.candidatos import CandidatosAPI
 from Entidades.curriculum import CurriculmAPI
@@ -13,21 +11,18 @@ from Entidades.postulaciones import PostulacionesAPI
 from Entidades.tipoContratacion import TipoContratacionAPI
 from Entidades.vacantes import VacantesAPI
 
-# Creamos una instancia de la aplicación FastAPI
 app = FastAPI()
 
-# Registramos cada router de las entidades en la aplicación principal
-# Esto permite que cada grupo de rutas esté organizado por su clase correspondiente
-app.include_router(AdministradorAPI().router)       # Rutas para administradores
-app.include_router(CandidatosAPI().router)          # Rutas para candidatos
-app.include_router(CurriculmAPI().router)           # Rutas para currículum
-app.include_router(DepartamentosAPI().router)       # Rutas para departamentos
-app.include_router(EmpleosAPI().router)             # Rutas para empleos
-app.include_router(EmpresasAPI().router)            # Rutas para empresas
-app.include_router(MunicipiosAPI().router)          # Rutas para municipios
-app.include_router(PostulacionesAPI().router)       # Rutas para postulaciones
-app.include_router(TipoContratacionAPI().router)    # Rutas para tipo de contratación
-app.include_router(VacantesAPI().router)            # Rutas para vacantes
+app.include_router(AdministradorAPI().router)
+app.include_router(CandidatosAPI().router)
+app.include_router(CurriculmAPI().router)
+app.include_router(DepartamentosAPI().router)
+app.include_router(EmpleosAPI().router)
+app.include_router(EmpresasAPI().router)
+app.include_router(MunicipiosAPI().router)
+app.include_router(PostulacionesAPI().router)
+app.include_router(TipoContratacionAPI().router)
+app.include_router(VacantesAPI().router)
 
 # Ruta raíz de la API, útil para verificar que el servidor está funcionando
 @app.get("/")

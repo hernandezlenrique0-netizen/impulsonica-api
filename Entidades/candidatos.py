@@ -1,10 +1,11 @@
-# Importamos APIRouter desde FastAPI para crear rutas específicas
+"""
+Clase CandidatosAPI que define rutas para gestionar candidatos en IMPULSONICA usando FastAPI.
+Permite listar, agregar, actualizar y eliminar candidatos mediante métodos HTTP (GET, POST, PUT, DELETE).
+Utiliza una lista en memoria como almacenamiento temporal y expone las rutas a través de APIRouter.
+"""
 from fastapi import APIRouter, HTTPException
-
-# Importamos el modelo de datos Candidatos desde otro archivo
 from modelo.candidatos_modelo import Candidatos
 
-# Definimos una clase que encapsula las rutas relacionadas con "Candidatos"
 class CandidatosAPI:
     def __init__(self):
         self.router = APIRouter()
@@ -24,57 +25,32 @@ class CandidatosAPI:
             )
         ]
 
-        # Registramos la ruta GET "/candidatos" que llama al metodo obtener_candidatos
         self.router.get("/candidatos")(self.obtener_candidatos)
-
-        # Registramos la ruta POST "/candidatos" que llama al metodo creater_candidatos
         self.router.post("/candidatos")(self.creater_candidatos)
-
-        # Registramos la ruta PUT "/candidatos/{id}" para actualizar un candidato existente
         self.router.put("/candidatos/{id}")(self.actualizar_candidato)
-
-        # Registramos la ruta DELETE "/candidatos/{id}" para eliminar un candidato por ID
         self.router.delete("/candidatos/{id}")(self.eliminar_candidato)
 
-    # Metodo que se ejecuta cuando se hace una petición GET a "/candidatos"
     def obtener_candidatos(self):
-        # Devuelve la lista de candidatos almacenados
         return self.candidato
 
-    # Metodo que se ejecuta cuando se hace una petición POST a "/candidatos"
     def creater_candidatos(self, candidato: Candidatos):
-        # Agrega el nuevo candidato a la lista
         self.candidato.append(candidato)
-
-        # Devuelve un mensaje de confirmación junto con el candidato agregado
         return {
             "mensaje": "Candidato agregado con éxito",
             "candidato": candidato
         }
 
-    # Metodo que se ejecuta cuando se hace una petición PUT a "/candidatos/{id}"
     def actualizar_candidato(self, id: int, datos: Candidatos):
-        """
-        Este endpoint permite actualizar los datos de un candidato existente.
-        - Parámetro `id`: ID del candidato que se desea actualizar.
-        - Parámetro `datos`: Objeto con los nuevos datos del candidato.
-        - Retorna: El objeto actualizado si se encuentra, o un error 404 si no existe.
-        """
         for i, candidato in enumerate(self.candidato):
             if candidato.Id == id:
                 self.candidato[i] = datos
                 return datos
         raise HTTPException(status_code=404, detail="Candidato no encontrado")
 
-    # Metodo que se ejecuta cuando se hace una petición DELETE a "/candidatos/{id}"
     def eliminar_candidato(self, id: int):
-        """
-        Este endpoint permite eliminar un candidato por su ID.
-        - Parámetro `id`: ID del candidato que se desea eliminar.
-        - Retorna: Un mensaje de confirmación si se elimina, o un error 404 si no existe.
-        """
         for i, candidato in enumerate(self.candidato):
             if candidato.Id == id:
                 del self.candidato[i]
                 return {"mensaje": "Candidato eliminado exitosamente"}
         raise HTTPException(status_code=404, detail="Candidato no encontrado")
+
